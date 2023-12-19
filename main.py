@@ -172,67 +172,123 @@
 #
 # pygame.quit()
 
+# import pygame
+# import random
+#
+# pygame.init()
+#
+# window = pygame.display.set_mode((400, 400))
+#
+# balloons_color = ['green', 'blue', 'red', ]
+# balloon_width = 20
+# balloon_height = 30
+# balloon_num = 10
+#
+# font = pygame.font.Font(None, 36)
+#
+# counter = 0
+#
+# balloons = []
+#
+# for i in range(balloon_num):
+#     x = random.randint(0, window.get_width() - balloon_width)
+#     y = random.randint(window.get_height() // 2, window.get_height() - balloon_height)
+#     color = random.choice(balloons_color)
+#     balloon_rect = pygame.draw.ellipse(window, color, (x, y, balloon_width, balloon_height))
+#
+#     tail_start_x = x + balloon_width // 2
+#     tail_start_y = y + balloon_height
+#     tail_end_x = tail_start_x
+#     tail_end_y = tail_start_y + random.randint(10, +20)
+#     pygame.draw.line(window, color, (tail_start_x, tail_start_y), (tail_end_x, tail_end_y))
+#
+#     balloons.append((balloon_rect, color))
+#
+# pygame.display.flip()
+#
+# while True:
+#     for event in pygame.event.get():
+#         if event.type == pygame.QUIT:
+#             pygame.quit()
+#             exit()
+#         if event.type == pygame.MOUSEBUTTONDOWN:
+#             mouse_pos = event.pos
+#             for i in range(len(balloons)):
+#                 balloon_rect, color = balloons[i]
+#                 if balloon_rect.collidepoint(mouse_pos):
+#                     balloons.pop(i)
+#                     counter += 1
+#                     break
+#
+#     for i in range(len(balloons)):
+#         balloon_rect, color = balloons[i]
+#         balloon_rect.move_ip(0, -5)
+#         if balloon_rect.bottom < 0:
+#             balloon_rect.bottom = window.get_height()
+#
+#     window.fill('white')
+#
+#     for i in range(len(balloons)):
+#         balloon_rect, color = balloons[i]
+#         pygame.draw.ellipse(window, color, balloon_rect)
+#
+#         tail_start_x = balloon_rect.x + balloon_width // 2
+#         tail_start_y = balloon_rect.y + balloon_height
+#         tail_end_x = tail_start_x
+#         tail_end_y = tail_start_y + random.randint(10, +20)
+#         pygame.draw.line(window, color, (tail_start_x, tail_start_y), (tail_end_x, tail_end_y))
+#
+#     score_text = font.render("Score: " + str(counter), True, (0, 0, 0))
+#     window.blit(score_text, (5, 5))
+#     pygame.display.flip()
+#     pygame.time.wait(100)
+
 import pygame
 import random
 
 pygame.init()
+screen = pygame.display.set_mode((500, 500))
+clock = pygame.time.Clock()
 
-window = pygame.display.set_mode((400, 400))
 
-balloons_color = ['green', 'blue', 'red', ]
-balloon_width = 20
-balloon_height = 30
-balloon_num = 10
+class Player:
+    def __init__(self):
+        self.rect = pygame.Rect(200, 150, 30, 30)
+        self.color = (0, 255, 0)
 
-balloons = []
+    def handle_keys(self):
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_LEFT]:
+            self.rect.x -= 3
+        if keys[pygame.K_RIGHT]:
+            self.rect.x += 3
+        if keys[pygame.K_UP]:
+            self.rect.y -= 3
+        if keys[pygame.K_DOWN]:
+            self.rect.y += 3
 
-for i in range(balloon_num):
-    x = random.randint(0, window.get_width() - balloon_width)
-    y = random.randint(window.get_height() // 2, window.get_height() - balloon_height)
-    color = random.choice(balloons_color)
-    balloon_rect = pygame.draw.ellipse(window, color, (x, y, balloon_width, balloon_height))
+    def draw(self):
+        pygame.draw.rect(screen, self.color, self.rect)
 
-    tail_start_x = x + balloon_width // 2
-    tail_start_y = y + balloon_height
-    tail_end_x = tail_start_x
-    tail_end_y = tail_start_y + random.randint(10, +20)
-    pygame.draw.line(window, color, (tail_start_x, tail_start_y), (tail_end_x, tail_end_y))
 
-    balloons.append((balloon_rect, color))
+class Enemy:
+    def __init__(self):
+        self.rect = pygame.Rect(random.randint(0, 470), random.randint(0, 470), 30, 30)
+        self.color = (255, 0, 0)
 
-pygame.display.flip()
 
-while True:
+player1 = Player()
+running = True
+while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            pygame.quit()
-            exit()
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            mouse_pos = event.pos
-            for i in range(len(balloons)):
-                balloon_rect, color = balloons[i]
-                if balloon_rect.collidepoint(mouse_pos):
-                    balloons.pop(i)
-                    # counter
-                    break
+            running = False
+    player1.handle_keys()
 
-    for i in range(len(balloons)):
-        balloon_rect, color = balloons[i]
-        balloon_rect.move_ip(0, -5)
-        if balloon_rect.bottom < 0:
-            balloon_rect.bottom = window.get_height()
+    screen.fill((0, 0, 0))
 
-    window.fill('white')
+    player1.draw()
 
-    for i in range(len(balloons)):
-        balloon_rect, color = balloons[i]
-        pygame.draw.ellipse(window, color, balloon_rect)
-
-        tail_start_x = balloon_rect.x + balloon_width // 2
-        tail_start_y = balloon_rect.y + balloon_height
-        tail_end_x = tail_start_x
-        tail_end_y = tail_start_y + random.randint(10, +20)
-        pygame.draw.line(window, color, (tail_start_x, tail_start_y), (tail_end_x, tail_end_y))
-
-    pygame.display.flip()
-    pygame.time.wait(100)
+    # Ekranni yangilash
+    pygame.display.update()
+    clock.tick(60)
