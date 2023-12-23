@@ -276,8 +276,13 @@ class Enemy:
         self.rect = pygame.Rect(random.randint(0, 470), random.randint(0, 470), 30, 30)
         self.color = (255, 0, 0)
 
+    def draw(self):
+        pygame.draw.rect(screen, self.color, self.rect)
+
 
 player1 = Player()
+enemies = [Enemy() for _ in range(5)]
+
 running = True
 while running:
     for event in pygame.event.get():
@@ -288,6 +293,12 @@ while running:
     screen.fill((0, 0, 0))
 
     player1.draw()
+
+    for enemy in enemies:
+        enemy.draw()
+        if player1.rect.colliderect(enemy.rect):
+            print("Collision detected!")
+            running = False
 
     # Ekranni yangilash
     pygame.display.update()
