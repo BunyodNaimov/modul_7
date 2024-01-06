@@ -67,13 +67,13 @@ while running:
     # прослушиватели событий
     for event in pygame.event.get():
         if event.type == QUIT:
-            # collapse the app
+            # свернуть приложение
             running = False
         if event.type == KEYDOWN:
-            # move user car to the left
+            # переместить машину пользователя влево
             if event.key in [K_a, K_LEFT]:
                 car_loc = car_loc.move([-int(road_w / 2), 0])
-            # move user car to the right
+            # переместить машину пользователя вправо
             if event.key in [K_d, K_RIGHT]:
                 car_loc = car_loc.move([int(road_w / 2), 0])
 

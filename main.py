@@ -243,63 +243,64 @@
 #     pygame.display.flip()
 #     pygame.time.wait(100)
 
-import pygame
-import random
+# import pygame
+# import random
+#
+# pygame.init()
+# screen = pygame.display.set_mode((500, 500))
+# clock = pygame.time.Clock()
+#
+#
+# class Player:
+#     def __init__(self):
+#         self.rect = pygame.Rect(200, 150, 30, 30)
+#         self.color = (0, 255, 0)
+#
+#     def handle_keys(self):
+#         keys = pygame.key.get_pressed()
+#         if keys[pygame.K_LEFT]:
+#             self.rect.x -= 3
+#         if keys[pygame.K_RIGHT]:
+#             self.rect.x += 3
+#         if keys[pygame.K_UP]:
+#             self.rect.y -= 3
+#         if keys[pygame.K_DOWN]:
+#             self.rect.y += 3
+#
+#     def draw(self):
+#         pygame.draw.rect(screen, self.color, self.rect)
+#
+#
+# class Enemy:
+#     def __init__(self):
+#         self.rect = pygame.Rect(random.randint(0, 470), random.randint(0, 470), 30, 30)
+#         self.color = (255, 0, 0)
+#
+#     def draw(self):
+#         pygame.draw.rect(screen, self.color, self.rect)
+#
+#
+# player1 = Player()
+# enemies = [Enemy() for _ in range(5)]
+#
+# running = True
+# while running:
+#     for event in pygame.event.get():
+#         if event.type == pygame.QUIT:
+#             running = False
+#     player1.handle_keys()
+#
+#     screen.fill((0, 0, 0))
+#
+#     player1.draw()
+#
+#     for enemy in enemies:
+#         enemy.draw()
+#         if player1.rect.colliderect(enemy.rect):
+#             print("Collision detected!")
+#             running = False
+#
+#     # Ekranni yangilash
+#     pygame.display.update()
+#     clock.tick(60)
 
-pygame.init()
-screen = pygame.display.set_mode((500, 500))
-clock = pygame.time.Clock()
-
-
-class Player:
-    def __init__(self):
-        self.rect = pygame.Rect(200, 150, 30, 30)
-        self.color = (0, 255, 0)
-
-    def handle_keys(self):
-        keys = pygame.key.get_pressed()
-        if keys[pygame.K_LEFT]:
-            self.rect.x -= 3
-        if keys[pygame.K_RIGHT]:
-            self.rect.x += 3
-        if keys[pygame.K_UP]:
-            self.rect.y -= 3
-        if keys[pygame.K_DOWN]:
-            self.rect.y += 3
-
-    def draw(self):
-        pygame.draw.rect(screen, self.color, self.rect)
-
-
-class Enemy:
-    def __init__(self):
-        self.rect = pygame.Rect(random.randint(0, 470), random.randint(0, 470), 30, 30)
-        self.color = (255, 0, 0)
-
-    def draw(self):
-        pygame.draw.rect(screen, self.color, self.rect)
-
-
-player1 = Player()
-enemies = [Enemy() for _ in range(5)]
-
-running = True
-while running:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
-    player1.handle_keys()
-
-    screen.fill((0, 0, 0))
-
-    player1.draw()
-
-    for enemy in enemies:
-        enemy.draw()
-        if player1.rect.colliderect(enemy.rect):
-            print("Collision detected!")
-            running = False
-
-    # Ekranni yangilash
-    pygame.display.update()
-    clock.tick(60)
