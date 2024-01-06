@@ -1,5 +1,3 @@
-import random
-
 import pygame
 
 
@@ -7,12 +5,31 @@ class Player(pygame.sprite.Sprite):
     def __init__(self, x, y):
         super().__init__()
         self.image = pygame.image.load("player.png")
-        self.rect = self.image.get_rect(center=(x, 0))
+        self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
 
     def update(self, speed, *args, **kwargs):
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_LEFT]:
+            self.rect.x -= speed
+        if keys[pygame.K_RIGHT]:
+            self.rect.x += speed
+        if keys[pygame.K_UP]:
+            self.rect.y -= speed
+        if keys[pygame.K_DOWN]:
+            self.rect.y += speed
 
+
+class Enemy(pygame.sprite.Sprite):
+    def __init__(self, x, y):
+        super().__init__()
+        self.image = pygame.image.load("enemy.png")
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
+
+    def update(self, speed, *args, **kwargs):
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LEFT]:
             self.rect.x -= speed
@@ -25,12 +42,10 @@ class Player(pygame.sprite.Sprite):
 
 
 group_players = pygame.sprite.Group()
+group_players.add(Player(100, 500), Player(400, 500))
 
-player1 = Player(100, 100)
-player2 = Player(100, 100)
-player3 = Player(300, 300)
-
-group_players.add(player1, player2, player3)
+group_enemies = pygame.sprite.Group()
+group_enemies.add(Enemy(100, 100), Enemy(200, 100))
 
 screen = pygame.display.set_mode((800, 800))
 
@@ -44,23 +59,14 @@ while running:
 
     screen.fill((0, 0, 0))
 
-    # screen.blit(player1.image, (player1.rect.x, player1.rect.y))
-    # # screen.blit(player2.image, (player2.rect.x, player2.rect.y))
-    # screen.blit(player3.image, (player3.rect.x, player3.rect.y))
     group_players.draw(screen)
+
+    group_enemies.draw(screen)
 
     pygame.display.update()
 
-    group_players.update()
-    # player1.update(5)
-    # # player2.update(10)
-    # player3.update(10)
+    group_players.update(5)
+
     clock.tick(60)
 
 pygame.quit()
-# sprite1 = pygame.sprite.Sprite()
-# sprite1.rect = pygame.Rect(20, 20, 10, 10)
-# sprite2 = pygame.sprite.Sprite()
-# sprite2.rect = pygame.Rect(20, 20, 10, 10)
-#
-# sprite3 = pygame.sprite.Sprite()
