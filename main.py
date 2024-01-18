@@ -304,3 +304,80 @@
 #     pygame.display.update()
 #     clock.tick(60)
 
+
+import pygame
+import random
+
+WIDTH = 800
+HEIGHT = 600
+BLACK = (0, 0, 0)
+WHITE = (255, 255, 255)
+
+
+class Player(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__()
+        self.image = pygame.Surface([50, 50])
+        self.image.fill(WHITE)
+        self.rect = self.image.get_rect()
+        self.rect.center = (WIDTH // 2, HEIGHT - 50)
+
+    def update(self):
+        pos = pygame.mouse.get_pos()
+        self.rect.x = pos[0]
+
+
+class Enemy(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__()
+        self.image = pygame.Surface([30, 30])
+        self.image.fill(WHITE)
+        self.rect = self.image.get_rect()
+        self.rect.x = random.randrange(WIDTH - self.rect.width)
+        self.rect.y = random.randrange(-100, -40)
+        self.speed = random.randrange(1, 4)
+
+    def update(self):
+        self.rect.y += self.speed
+        if self.rect.y > HEIGHT + 10:
+            self.rect.x = random.randrange(WIDTH - self.rect.width)
+            self.rect.y = random.randrange(-100, -40)
+            self.speed = random.randrange(1, 4)
+
+
+pygame.init()
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption("Pygame'da Shooter")
+clock = pygame.time.Clock()
+
+all_sprites = pygame.sprite.Group()
+enemies = pygame.sprite.Group()
+player = Player()
+all_sprites.add(player)
+
+for i in range(10):
+    enemy = Enemy()
+    all_sprites.add(enemy)
+    enemies.add(enemy)
+
+pygame.mixer.music.load("Gustixa_Rhianne_-_Somewhere_Only_We_Know_74895930.mp3")
+pygame.mixer.music.play(-1)
+running = True
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+
+    all_sprites.update()
+
+    collisions = pygame.sprite.spritecollide(player, enemies, False)
+    if collisions:
+        running = False
+
+    screen.fill(BLACK)
+    all_sprites.draw(screen)
+
+    pygame.display.flip()
+    clock.tick(60)
+
+pygame.quit()
